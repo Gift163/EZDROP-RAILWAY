@@ -1,34 +1,39 @@
-import os
 from aiogram import Bot, Dispatcher, types
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from aiogram.types import ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo, InputFile
 from aiogram.utils import executor
+import logging
+import os
 from dotenv import load_dotenv
 
-# Загружаем переменные из .env (если ты локально тестируешь)
+# Загрузка токена
 load_dotenv()
+TOKEN = os.getenv("BOT_TOKEN")
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-if not BOT_TOKEN:
-    print("❌ BOT_TOKEN not found! Set it in Railway Variables or .env file.")
-    exit()
-
-bot = Bot(token=BOT_TOKEN)
+bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
+logging.basicConfig(level=logging.INFO)
+
+# Путь к изображению (можешь заменить на своё)
+IMAGE_PATH = "ezdrop_preview.jpg"  # загрузи файл с таким именем в репозиторий
 
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
-    await message.answer(
-        f"👋 Welcome to <b>EZDROP</b>!\n\n"
-        "🎁 Open animated cases\n"
-        "🖼️ Collect rare NFTs and $EZCOIN\n"
-        "🌐 Powered by WebApp\n\n"
-        "Tap below to start your journey 👇",
-        parse_mode="HTML"
+    photo = InputFile(IMAGE_PATH)
+
+    markup = InlineKeyboardMarkup().add(
+        InlineKeyboardButton("🚀 Open EZDROP", web_app=WebAppInfo(url="https://ezdrop-rouge.vercel.app"))
     )
 
-   
-    await message.answer("👇", reply_markup=web_button)
+    await message.answer_photo(
+        photo=photo,
+        caption=(
+            "👋 Welcome to *EZDROP*!\n\n"
+            "Unbox unique NFTs, earn rewards, and explore exclusive cases inside our WebApp.\n\n"
+            "Click the button below to start your journey 👇"
+        ),
+        reply_markup=markup,
+        parse_mode="Markdown"
+    )
 
 if __name__ == '__main__':
-    executor.start_polling(dp)
+    executor.start_polling(dp, skip_updates=True)
