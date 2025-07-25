@@ -1,0 +1,23 @@
+# Используем официальный Python-образ
+FROM python:3.11-slim
+
+# Устанавливаем зависимости системы
+RUN apt-get update && apt-get install -y gcc libffi-dev libpq-dev
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем зависимости
+COPY requirements.txt .
+
+# Устанавливаем Python-зависимости
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копируем весь код
+COPY . .
+
+# Устанавливаем переменную окружения для запуска
+ENV PYTHONUNBUFFERED=1
+
+# Стартовая команда
+CMD ["python", "bot.py"]
