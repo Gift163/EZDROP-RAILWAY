@@ -21,7 +21,7 @@ async def start(message: types.Message):
     photo = InputFile(IMAGE_PATH)
 
     markup = InlineKeyboardMarkup().add(
-        InlineKeyboardButton("🚀 Open EZDROP", web_app=WebAppInfo(url="https://ezdrop-rouge.vercel.app"))
+        
     )
 
     await message.answer_photo(
