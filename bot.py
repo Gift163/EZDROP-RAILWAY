@@ -1,9 +1,17 @@
+import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from aiogram.utils import executor
-import os
+from dotenv import load_dotenv
 
+# Загружаем токен из .env (если ты используешь .env)
+load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+# Проверка на наличие токена
+if not BOT_TOKEN:
+    print("❌ BOT_TOKEN not found. Please set it in .env or Railway variables.")
+    exit()
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot)
@@ -15,7 +23,7 @@ async def start_cmd(message: types.Message):
     text = (
         f"👋 Welcome, <b>{name}</b>!\n\n"
         "You're now in <b>EZDROP</b> — a next-gen Telegram game where:\n\n"
-        "🎁 You open animated cases and win rewards\n"
+        "🎁 Open animated cases and win rewards\n"
         "🖼️ Collect exclusive NFTs and $EZCOIN tokens\n"
         "🌐 All connected to a full-featured WebApp\n\n"
         "Start your journey now 👇"
@@ -23,7 +31,6 @@ async def start_cmd(message: types.Message):
 
     await message.answer(text, parse_mode="HTML")
 
-    # WebApp-кнопка
     web_kb = InlineKeyboardMarkup()
     web_kb.add(InlineKeyboardButton("🌐 Launch EZDROP WebApp", web_app=WebAppInfo(url="https://ezdrop-rouge.vercel.app")))
 
