@@ -27,9 +27,7 @@ async def start(message: types.Message):
         parse_mode="HTML"
     )
 
-    web_button = InlineKeyboardMarkup()
-    web_button.add(InlineKeyboardButton("🌐 Launch EZDROP", web_app=WebAppInfo(url="https://ezdrop-rouge.vercel.app")))
-
+   
     await message.answer("👇", reply_markup=web_button)
 
 if __name__ == '__main__':
