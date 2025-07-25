@@ -32,5 +32,5 @@ async def start(message: types.Message):
 
     await message.answer("👇", reply_markup=web_button)
 
-if name == '__main__':
+if __name__ == '__main__':
     executor.start_polling(dp)
